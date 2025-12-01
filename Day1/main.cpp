@@ -28,6 +28,11 @@ int main()
   while (attachedDocument >> instruction){
     char direction = instruction[0];
     int amount = stoi(instruction.substr(1));
+    if (direction == 'L'){
+      amount *= -1;
+    }
+
+    cout << safeDial.moveWheel(amount) << endl;
   }
 
   cout << safeDial.moveWheel(-51);
