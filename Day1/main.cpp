@@ -17,6 +17,14 @@ class SafeDial{
       }
       return wheelPosition;
     }
+
+    int getWheelPosition(){
+      return wheelPosition;
+    }
+
+    int getMaxWheelPosition(){
+      return maxWheelPosition;
+    }
 };
 
 /*
@@ -46,7 +54,7 @@ int solvePuzzleOne(){
 /*
 Puzzle two is to find the amount of times the wheel is passes or ends at position 0 given the input
 */
-int solvePuzzleTwo(){
+int solvePuzzleTwoBruteForce(){
   SafeDial safeDial;
   ifstream attachedDocument("attachedDocument.txt");
   int zeroCount = 0;
@@ -66,9 +74,35 @@ int solvePuzzleTwo(){
   return(zeroCount);
 }
 
+int solvePuzzleTwoMaths(){
+  SafeDial safeDial;
+  ifstream attachedDocument("attachedDocument.txt");
+  int zeroCount = 0;
+  int maxWheelPosition = safeDial.getMaxWheelPosition();
+
+  string instruction = "";
+  while (attachedDocument >> instruction){
+    char direction = instruction[0];
+    int amount = stoi(instruction.substr(1));
+    int wheelPosition = safeDial.getWheelPosition(); 
+
+    if (direction == 'L'){
+      zeroCount += (((maxWheelPosition - wheelPosition) % maxWheelPosition) + amount) / maxWheelPosition;
+      safeDial.moveWheel(amount * -1);
+    } 
+    else{
+      zeroCount += (wheelPosition + amount) / maxWheelPosition;
+      safeDial.moveWheel(amount);
+    }
+  }
+
+  return(zeroCount);
+}
+
 int main()
 {
-  cout << solvePuzzleTwo();
+  cout << solvePuzzleTwoMaths() << endl;
+  cout << solvePuzzleTwoBruteForce();
   
   return 0;
 }
