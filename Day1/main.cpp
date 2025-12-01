@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+
 using namespace std;
 
 class SafeDial{
@@ -19,6 +21,12 @@ class SafeDial{
 int main()
 {
   SafeDial safeDial;
+  ifstream attachedDocument("attachedDocument.txt");
+
+  string instruction = "";
+  while (attachedDocument >> instruction){
+    cout << instruction << endl;
+  }
 
   cout << safeDial.moveWheel(-51);
   
