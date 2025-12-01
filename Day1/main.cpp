@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include<string>
 
 using namespace std;
 
@@ -25,7 +26,8 @@ int main()
 
   string instruction = "";
   while (attachedDocument >> instruction){
-    cout << instruction << endl;
+    char direction = instruction[0];
+    int amount = stoi(instruction.substr(1));
   }
 
   cout << safeDial.moveWheel(-51);
