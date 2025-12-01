@@ -82,18 +82,15 @@ int solvePuzzleTwoMaths(){
 
   string instruction = "";
   while (attachedDocument >> instruction){
-    char direction = instruction[0];
+    int direction = instruction[0] == 'L' ? -1 : 1;
     int amount = stoi(instruction.substr(1));
     int wheelPosition = safeDial.getWheelPosition(); 
-
-    if (direction == 'L'){
-      zeroCount += (((maxWheelPosition - wheelPosition) % maxWheelPosition) + amount) / maxWheelPosition;
-      safeDial.moveWheel(amount * -1);
-    } 
-    else{
-      zeroCount += (wheelPosition + amount) / maxWheelPosition;
-      safeDial.moveWheel(amount);
-    }
+    
+    int directionalPosition = (maxWheelPosition + (wheelPosition * direction)) % maxWheelPosition;
+    int zerosToAdd = (directionalPosition + amount) / maxWheelPosition;
+    
+    zeroCount += zerosToAdd;
+    safeDial.moveWheel(amount * direction);
   }
 
   return(zeroCount);
