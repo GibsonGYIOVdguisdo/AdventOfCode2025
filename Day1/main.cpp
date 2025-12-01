@@ -19,6 +19,9 @@ class SafeDial{
     }
 };
 
+/*
+Puzzle one is to find the amount of times the wheel ends at position 0 given the input
+*/
 int solvePuzzleOne(){
   SafeDial safeDial;
   ifstream attachedDocument("attachedDocument.txt");
@@ -40,9 +43,32 @@ int solvePuzzleOne(){
   return(zeroCount);
 }
 
+/*
+Puzzle two is to find the amount of times the wheel is passes or ends at position 0 given the input
+*/
+int solvePuzzleTwo(){
+  SafeDial safeDial;
+  ifstream attachedDocument("attachedDocument.txt");
+  int zeroCount = 0;
+
+  string instruction = "";
+  while (attachedDocument >> instruction){
+    int direction = instruction[0] == 'L' ? -1 : 1;
+    int amount = stoi(instruction.substr(1));
+
+    for (int i = 0; i < amount; i++){
+      if (safeDial.moveWheel(1 * direction) == 0){
+        zeroCount++;
+      }
+    }
+  }
+
+  return(zeroCount);
+}
+
 int main()
 {
-  cout << solvePuzzleOne();
+  cout << solvePuzzleTwo();
   
   return 0;
 }
