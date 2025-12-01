@@ -23,6 +23,7 @@ int main()
 {
   SafeDial safeDial;
   ifstream attachedDocument("attachedDocument.txt");
+  int zeroCount = 0;
 
   string instruction = "";
   while (attachedDocument >> instruction){
@@ -32,10 +33,12 @@ int main()
       amount *= -1;
     }
 
-    cout << safeDial.moveWheel(amount) << endl;
+    if (safeDial.moveWheel(amount) == 0){
+      zeroCount++;
+    }
   }
 
-  cout << safeDial.moveWheel(-51);
+  cout << zeroCount;
   
   return 0;
 }
