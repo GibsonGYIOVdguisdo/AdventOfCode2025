@@ -19,8 +19,7 @@ class SafeDial{
     }
 };
 
-int main()
-{
+int solvePuzzleOne(){
   SafeDial safeDial;
   ifstream attachedDocument("attachedDocument.txt");
   int zeroCount = 0;
@@ -38,7 +37,12 @@ int main()
     }
   }
 
-  cout << zeroCount;
+  return(zeroCount);
+}
+
+int main()
+{
+  cout << solvePuzzleOne();
   
   return 0;
 }
