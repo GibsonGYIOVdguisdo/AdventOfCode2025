@@ -2,6 +2,13 @@
   "files.associations": {
     "*.ejs": "html",
     "istream": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "xstring": "cpp",
+    "list": "cpp",
+    "vector": "cpp",
+    "fstream": "cpp",
+    "iterator": "cpp",
+    "initializer_list": "cpp",
+    "xutility": "cpp"
   }
 }
