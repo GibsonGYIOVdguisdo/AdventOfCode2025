@@ -4,19 +4,30 @@
 
 using namespace std;
 
+bool isTwoRepeatingHalves(string value){
+  int midPoint = value.length() / 2;
+
+  string firstHalf = value.substr(0, midPoint);
+  string lastHalf = value.substr(midPoint);
+
+  return firstHalf == lastHalf;
+}
+
 long long getSumOfInvalidIdsInRange(long long start, long long end){
   long long sumOfInvalidIds = 0;
 
   for (long long currentId = start; currentId <= end; currentId++){
     string idString = to_string(currentId);
-    int midPoint = idString.length() / 2;
-    if (idString.substr(0, midPoint) == idString.substr(midPoint)){
+    
+    if (isTwoRepeatingHalves(idString)){
       sumOfInvalidIds += currentId;
     }
   }
 
   return sumOfInvalidIds;
 }
+
+
 
 long long solvePuzzleOne(string input){
   long long sumOfInvalidIds = 0;
@@ -43,6 +54,10 @@ long long solvePuzzleOne(string input){
   return sumOfInvalidIds;
 }
 
+long long solvePuzzleTwo(string input){
+  return 0;
+}
+
 int main()
 {
   ifstream inputStream("idRanges.txt");
@@ -50,7 +65,7 @@ int main()
   inputStream >> idRanges;
   inputStream.close();
 
-  cout << solvePuzzleOne(idRanges);
+  cout << solvePuzzleTwo(idRanges);
 
   return 0;
 }
