@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <functional>
 
 using namespace std;
 
@@ -13,12 +14,12 @@ bool isTwoRepeatingHalves(string value){
   return firstHalf == lastHalf;
 }
 
-long long getSumOfInvalidIdsInRange(long long start, long long end){
+long long getSumOfInvalidIdsInRange(long long start, long long end, function<bool (string)> isValid){
   long long sumOfInvalidIds = 0;
 
   for (long long currentId = start; currentId <= end; currentId++){
     string idString = to_string(currentId);
-    
+
     if (isTwoRepeatingHalves(idString)){
       sumOfInvalidIds += currentId;
     }
@@ -48,7 +49,7 @@ long long solvePuzzleOne(string input){
     long long start = stoll(currentSegment.substr(0, dividerPos));
     long long end = stoll(currentSegment.substr(dividerPos + 1));
 
-    sumOfInvalidIds += getSumOfInvalidIdsInRange(start, end);
+    sumOfInvalidIds += getSumOfInvalidIdsInRange(start, end, isTwoRepeatingHalves);
   }
 
   return sumOfInvalidIds;
@@ -65,7 +66,7 @@ int main()
   inputStream >> idRanges;
   inputStream.close();
 
-  cout << solvePuzzleTwo(idRanges);
+  cout << solvePuzzleOne(idRanges);
 
   return 0;
 }
