@@ -16,6 +16,10 @@ bool isTwoRepeatingHalves(string value){
 
 bool isMadeOfRepeatingSubstring(string value){
   for (int i = 0; i < value.length() / 2; i++){
+    if (value.length() % (i + 1) != 0){
+      continue;
+    }
+
     string substring = value.substr(0, i + 1);
     bool repeatingSubstringFound = true;
     for (int j = i + 1; j < value.length(); j += i + 1){
