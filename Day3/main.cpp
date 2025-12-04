@@ -69,9 +69,24 @@ int solvePuzzleOne(){
   return totalPower;
 }
 
+int solvePuzzleTwo(){
+  string powerBank;
+  ifstream powerBanksFile("powerBanks.txt");
+  long long totalPower = 0;
+
+  while (powerBanksFile >> powerBank){
+    string largestJoltageSubsequence = getLargestJoltageSubsequence(powerBank, 12);
+    totalPower += stoll(largestJoltageSubsequence);
+  }
+
+  powerBanksFile.close();
+
+  return totalPower;
+}
+
 int main()
 {
-  cout << "Total: " << solvePuzzleOne();
+  cout << "Total: " << solvePuzzleTwo();
 
   return 0;
 }
