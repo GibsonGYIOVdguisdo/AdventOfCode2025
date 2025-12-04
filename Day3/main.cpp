@@ -5,6 +5,43 @@
 
 using namespace std;
 
+class BigInt{
+  private:
+    std::string value = "0";
+    
+  public:
+    BigInt(std::string value="0"){
+      value = value;
+    }
+    
+    void add(std::string num){
+      int carryDigit = 0;
+      int i = 0;
+      while (i < num.length() || carryDigit > 0){
+        int fromNum = i < num.length() ? num.at(num.length() - 1 - i) + carryDigit - '0': carryDigit;
+
+        if (value.length() < i + 1){
+          value = '0' + value;
+        }
+
+        carryDigit = 0;
+        int fromValue = value.at(value.length() - 1 - i) - '0';
+        int sum = fromNum + fromValue;
+        int newDigit = sum % 10;
+
+        carryDigit = sum / 10;
+        
+        value[value.length() - 1 - i] = to_string(newDigit)[0];
+
+        i++;
+      }
+    }
+
+    std::string get(){
+      return value;
+    }
+};
+
 string getLargestJoltageSubsequence(string powerbank, int length = 2){
   string result = "";
 
@@ -69,14 +106,17 @@ int solvePuzzleOne(){
   return totalPower;
 }
 
-int solvePuzzleTwo(){
+BigInt solvePuzzleTwo(){
   string powerBank;
-  ifstream powerBanksFile("powerBanks.txt");
-  long long totalPower = 0;
+  ifstream powerBanksFile("../../powerBanks.txt");
+
+  // std::wcout << std::filesystem::current_path() << L'\n';
+
+  BigInt totalPower;
 
   while (powerBanksFile >> powerBank){
     string largestJoltageSubsequence = getLargestJoltageSubsequence(powerBank, 12);
-    totalPower += stoll(largestJoltageSubsequence);
+    totalPower.add(largestJoltageSubsequence);
   }
 
   powerBanksFile.close();
@@ -86,7 +126,8 @@ int solvePuzzleTwo(){
 
 int main()
 {
-  cout << "Total: " << solvePuzzleTwo();
+  cout << "Total: " << solvePuzzleTwo().get();
 
   return 0;
 }
+
