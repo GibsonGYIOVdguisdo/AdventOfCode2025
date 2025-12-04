@@ -18,6 +18,13 @@
     "deque": "cpp",
     "stack": "cpp",
     "xlocale": "cpp",
-    "xmemory": "cpp"
+    "xmemory": "cpp",
+    "format": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xloctime": "cpp"
   }
 }
