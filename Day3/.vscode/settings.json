@@ -9,6 +9,10 @@
     "fstream": "cpp",
     "iterator": "cpp",
     "initializer_list": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "iostream": "cpp",
+    "utility": "cpp",
+    "memory": "cpp",
+    "limits": "cpp"
   }
 }

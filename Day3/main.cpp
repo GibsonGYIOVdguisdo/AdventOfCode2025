@@ -5,51 +5,47 @@
 
 using namespace std;
 
-void insertInOrder(vector<int>* vectorPointer, int value){
-  for (int i = 0; i < (*vectorPointer).size(); i++) {
-    int element = (*vectorPointer).at(i);
-    if (element >= value) {
-      (*vectorPointer).insert((*vectorPointer).begin() + i, value);
-      return;
-    }
-  }
-  (*vectorPointer).push_back(value);
-}
+int getLargestTotalJoltage(string powerbank){
+  int largest = -1;
+  char leftValue = powerbank.at(0);
+  char rightValue = '0';
 
-vector<int> getLargestJoltage(string bank, int count = 1){
-  vector<int> largestJoltages;
+  for (int i = 1; i < powerbank.length(); i++){
+    char currentJoltage = powerbank.at(i);
 
-  for (char c : bank){
-    int joltage = c - '0';
-    if (largestJoltages.size() < count || joltage > largestJoltages.at(0)){
-      insertInOrder(&largestJoltages, joltage);
+    if (leftValue < currentJoltage && i != powerbank.length() - 1) {
+      leftValue = currentJoltage;
+      rightValue = powerbank.at(i + 1);
+    } else {
+      rightValue = max(rightValue, currentJoltage);
     }
-    if (largestJoltages.size() > count) {
-      largestJoltages.erase(largestJoltages.begin());
-    }
+
+    string combinedJoltage;
+    combinedJoltage += leftValue;
+    combinedJoltage += rightValue;
+
+    largest = max(stoi(combinedJoltage), largest);
   }
 
-  return largestJoltages;
+  return largest;
 }
 
 int solvePuzzleOne(){
   string powerBank;
   ifstream powerBanksFile("powerBanks.txt");
+  int totalPower = 0;
 
   while (powerBanksFile >> powerBank){
-    vector<int> joltages = getLargestJoltage(powerBank, 2);
-    for (int joltage : joltages){
-      cout << joltage << endl;
-    }
+    totalPower += getLargestTotalJoltage(powerBank);
   }
 
   powerBanksFile.close();
-  return 0;
+
+  return totalPower;
 }
 
 int main()
 {
-  cout << "start";
   cout << "Total: " << solvePuzzleOne();
 
   return 0;
