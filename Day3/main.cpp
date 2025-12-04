@@ -7,18 +7,36 @@ using namespace std;
 
 string getLargestJoltageSubsequence(string powerbank, int length = 2){
   string result = "";
-  
+
   string monotonicString;
   stack<int> indexStack;
 
   for (int i = 0; i < powerbank.length(); i++){
     char joltage = powerbank.at(i);
 
+    bool notEnoughElements = false;
+
     while (monotonicString.length() != 0 && monotonicString.back() < joltage){
       monotonicString.pop_back();
+      int topIndex = indexStack.top();
       indexStack.pop();
+
+      int remainingJoltages = powerbank.length() - i;
+      int joltagesNeeded = length - monotonicString.length();
+      
+      if (remainingJoltages < joltagesNeeded){
+        indexStack.push(topIndex);
+        monotonicString += powerbank.at(topIndex);
+
+        notEnoughElements = true;
+        break;
+      }
+
     }
 
+    if (notEnoughElements){
+      break;
+    }
     indexStack.push(i);
     monotonicString += joltage;
   }
@@ -26,7 +44,11 @@ string getLargestJoltageSubsequence(string powerbank, int length = 2){
   result = monotonicString;
   if (result.length() < length){
     int remainingLength = length - result.length();
-    monotonicString + getLargestJoltageSubsequence(powerbank.substr(indexStack.top() + 1, ))
+    if (remainingLength == 0){
+      return result;
+    }
+    int topIndex = indexStack.size() > 0 ? indexStack.top() : 0;
+    result += getLargestJoltageSubsequence(powerbank.substr(topIndex + 1), remainingLength);
   }
 
   return result.substr(0, length);;
@@ -39,9 +61,6 @@ int solvePuzzleOne(){
 
   while (powerBanksFile >> powerBank){
     string largestJoltageSubsequence = getLargestJoltageSubsequence(powerBank, 2);
-    
-    cout << stoi(largestJoltageSubsequence) << endl;
-
     totalPower += stoi(largestJoltageSubsequence);
   }
 
