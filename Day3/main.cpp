@@ -108,7 +108,7 @@ int solvePuzzleOne(){
 
 BigInt solvePuzzleTwo(){
   string powerBank;
-  ifstream powerBanksFile("../../powerBanks.txt");
+  ifstream powerBanksFile("powerBanks.txt");
 
   // std::wcout << std::filesystem::current_path() << L'\n';
 
