@@ -13,6 +13,11 @@
     "iostream": "cpp",
     "utility": "cpp",
     "memory": "cpp",
-    "limits": "cpp"
+    "limits": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "stack": "cpp",
+    "xlocale": "cpp",
+    "xmemory": "cpp"
   }
 }

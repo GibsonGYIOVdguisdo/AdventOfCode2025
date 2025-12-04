@@ -1,33 +1,35 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <vector>
+#include <stack>
 
 using namespace std;
 
-int getLargestTotalJoltage(string powerbank){
-  int largest = -1;
-  char leftValue = powerbank.at(0);
-  char rightValue = '0';
+string getLargestJoltageSubsequence(string powerbank, int length = 2){
+  string result = "";
+  
+  string monotonicString;
+  stack<int> indexStack;
 
-  for (int i = 1; i < powerbank.length(); i++){
-    char currentJoltage = powerbank.at(i);
+  for (int i = 0; i < powerbank.length(); i++){
+    char joltage = powerbank.at(i);
 
-    if (leftValue < currentJoltage && i != powerbank.length() - 1) {
-      leftValue = currentJoltage;
-      rightValue = powerbank.at(i + 1);
-    } else {
-      rightValue = max(rightValue, currentJoltage);
+    while (monotonicString.length() != 0 && monotonicString.back() < joltage){
+      monotonicString.pop_back();
+      indexStack.pop();
     }
 
-    string combinedJoltage;
-    combinedJoltage += leftValue;
-    combinedJoltage += rightValue;
-
-    largest = max(stoi(combinedJoltage), largest);
+    indexStack.push(i);
+    monotonicString += joltage;
   }
 
-  return largest;
+  result = monotonicString;
+  if (result.length() < length){
+    int remainingLength = length - result.length();
+    monotonicString + getLargestJoltageSubsequence(powerbank.substr(indexStack.top() + 1, ))
+  }
+
+  return result.substr(0, length);;
 }
 
 int solvePuzzleOne(){
@@ -36,7 +38,11 @@ int solvePuzzleOne(){
   int totalPower = 0;
 
   while (powerBanksFile >> powerBank){
-    totalPower += getLargestTotalJoltage(powerBank);
+    string largestJoltageSubsequence = getLargestJoltageSubsequence(powerBank, 2);
+    
+    cout << stoi(largestJoltageSubsequence) << endl;
+
+    totalPower += stoi(largestJoltageSubsequence);
   }
 
   powerBanksFile.close();
