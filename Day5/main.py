@@ -28,4 +28,36 @@ def solve_puzzle_one(file_content):
   
   return total
 
-print (solve_puzzle_one(file_content))
+def solve_puzzle_two(file_content):
+  fresh_ids = set()
+  all_ranges = []
+  total = 0
+  
+  for line in file_content:
+    if (len(line.strip()) == 0):
+      break
+    start, end = line.strip().split("-")
+    
+    start = int(start)
+    end = int(end)
+    all_ranges.append([start, end])
+    
+  all_ranges.sort()
+  
+  combined_ranges = []
+  combined_ranges.append(all_ranges[0])
+  
+  for range in all_ranges:
+    start = range[0]
+    end = range[1]
+    if start >= combined_ranges[-1][0] and start <= combined_ranges[-1][1]:
+      combined_ranges[-1][1] = max(end, combined_ranges[-1][1])
+    else:
+      combined_ranges.append(range)
+    
+  for range in combined_ranges:
+    total += range[1] - range[0] + 1
+  
+  return total
+
+print(solve_puzzle_two(file_content))
