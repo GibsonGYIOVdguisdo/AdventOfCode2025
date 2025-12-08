@@ -65,6 +65,19 @@ vector<Position> getPositionsFromFile(string fileName){
 	return allPositions;
 }
 
+Position getClosestPosition(Position position, vector<Position positions>){
+	Position closestPosition = positions[0];
+	int smallestDistance = position.getDistance(position[0]);
+	
+	for (Position currentPosition : positions):
+		int currentDistance = currentPosition.getDistance(position)
+		if (currentPosition != position && currentDistance < smallestDistance){
+			smallestDistance = currentDistance;
+		}
+	}
+	
+	return closestPosition;
+}
 
 int main(){
 	
