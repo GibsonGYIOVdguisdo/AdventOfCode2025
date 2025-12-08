@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <set>
 #include <algorithm>
+#include <utility>
+
 
 using namespace std;
 
@@ -16,9 +18,9 @@ class Position{
 		int z;
 	
 		float getDistance(Position otherPosition){
-			int distanceX = otherPosition.x - x;
-			int distanceY = otherPosition.y - y;
-			int distanceZ = otherPosition.z - z;
+			float distanceX = otherPosition.x - x;
+			float distanceY = otherPosition.y - y;
+			float distanceZ = otherPosition.z - z;
 			
 			return sqrt(pow(distanceX, 2) + pow(distanceY, 2) + pow(distanceZ, 2));
 		}
@@ -121,35 +123,88 @@ Position getClosestPosition(Position position, vector<Position> positions){
 	return closestPosition;
 }
 
+bool isPositionAlreadyInRoute(unordered_map<Position, Position, PositionHashing> links, Position routeStartPosition, Position position){
+	Position currentPosition = routeStartPosition;
+	
+	while (links.count(currentPosition) != 0){
+		currentPosition = links[currentPosition];
+		
+		if (currentPosition == position){
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+Position getEndOfRoute(unordered_map<Position, Position, PositionHashing> links, Position position){
+	Position currentPosition = position;
+	cout << currentPosition.toString();
+	
+	
+	while (links.count(currentPosition) != 0){
+		currentPosition = links[currentPosition];
+		cout << "  -- >  " << currentPosition.toString();
+	}
+	
+	cout << endl;
+	
+	return currentPosition;
+}
 
 int main(){
 	vector<Position> allPositions = getPositionsFromFile("input.txt");
 	
-	unordered_map<int, vector<Position>> distances;
-	vector<int> allDistances;
+	unordered_map<float, vector<pair<Position, Position>>> distances;
+	vector<float> allDistances;
 	
-	for (Position position : allPositions){
-		int distance = position.getDistance(getClosestPosition(position, allPositions));
-		if (distances.find(distance) == distances.end()){
-			allDistances.push_back(distance);
+	for (int i = 0; i < allPositions.size(); i++){
+		Position position = allPositions[i];
+		for (int j = i + 1; j < allPositions.size(); j++){
+			Position position2 = allPositions[j];
+			pair<Position, Position> posPair = {position, position2};
+			float distance = position.getDistance(position2);
+			if (distances.count(distance) == 0){
+				allDistances.push_back(distance);
+			}
+			distances[distance].push_back(posPair);
 		}
-
-		distances[distance].push_back(position);
 	}
 	
 	sort(allDistances.begin(), allDistances.end());
 	
+	vector<set<position> groupedPositions;
 	int count = 0;
 	int i = 0;
-	while (count < 10 && i < distances.size()){
-		for (Position position : distances[allDistances[i]]){
-			cout << count << ": " << position.toString() << endl;
+	while (count < 10 && i < allDistances.size()){
+		cout << "f" << endl;
+		for (pair<Position, Position> posPair: distances[allDistances[i]]){
 			count += 1;
-		}6
+			cout << posPair.second.toString() << endl;
+			if (!isPositionAlreadyInRoute(links, posPair.second, posPair.first)){
+				links[posPair.first] = posPair.second;
+			}
+			if (count > 10){
+				break;
+			}
+		}
 		i++;
 	}
 	
+	unordered_map<Position, int, PositionHashing> finalPositionCount;
+	
+    for (auto kvpair : links){
+		Position currentPosition = kvpair.first;
+		Position endOfRoute = getEndOfRoute(links, currentPosition);
+		finalPositionCount.insert({endOfRoute, 0});
+		finalPositionCount[endOfRoute] += 1;
+	}
+	
+    for (auto kvpair : finalPositionCount){
+		cout << kvpair.second << endl;
+	}
 
+	
 	
 	
 	
