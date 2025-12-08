@@ -22,19 +22,29 @@ vector<string> splitString(string stringToSplit, char deliminator){
 	return segments;
 }
 
-int main(){
-	ifstream fileContent("input.txt");
-	
+vector<vector<int>> getPositionsFromFile(string fileName){
+	ifstream fileContent(fileName);
 	vector<vector<int>> allPositions; 
 	string line;
 	while (fileContent >> line){
 		vector<int> position;
 		for (string segment : splitString(line, ',')){
 			position.push_back(stoi(segment));
-			cout << segment << endl;
 		}
-		cout << endl;
 		allPositions.push_back(position);
+	}
+	
+	return allPositions;
+}
+
+int main(){
+	
+	vector<vector<int>> allPositions = getPositionsFromFile("input.txt");
+
+	for (vector<int> position : allPositions){
+		for (int coordinate : position){
+			cout << coordinate << endl;
+		}
 	}
 
 	return 0;
