@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <set>
+#include <unordered_set>
 #include <algorithm>
 #include <utility>
 
@@ -152,6 +152,50 @@ Position getEndOfRoute(unordered_map<Position, Position, PositionHashing> links,
 	return currentPosition;
 }
 
+class GroupedPositions{
+	public:
+		vector<unordered_set<Position, PositionHashing>> positionGroups = {};
+		
+		void addPositions(Position position1, Position position2){
+			bool added = false;
+			int pos1Set = -1;
+			int pos2Set = -1;
+			int i = 0;
+			for (unordered_set<Position, PositionHashing>& currentGroup : positionGroups){
+				if (currentGroup.find(position1) != currentGroup.end()){
+					pos1Set = i;
+				}
+				if (currentGroup.find(position2) != currentGroup.end()){
+					pos2Set = i;
+				}
+				i++;
+			}
+			i--;
+			
+			
+			if (pos1Set != -1 && pos2Set != -1){
+				positionGroups[pos1Set].insert(position1);
+				positionGroups[pos1Set].insert(position2);
+				
+				positionGroups[pos1Set].insert(positionGroups[pos2Set].begin(), positionGroups[pos2Set].end());
+				positionGroups.erase(positionGroups.begin() + pos2Set);
+				
+			}
+			else if (pos1Set != -1){
+				positionGroups[pos1Set].insert(position2);
+			}
+			else if (pos2Set != -1){
+				positionGroups[pos2Set].insert(position1);
+			}
+			else {
+				unordered_set<Position, PositionHashing> newSet;
+				newSet.insert(position1);
+				newSet.insert(position2);
+				positionGroups.push_back(newSet);
+			}
+		}
+};
+
 int main(){
 	vector<Position> allPositions = getPositionsFromFile("input.txt");
 	
@@ -173,37 +217,28 @@ int main(){
 	
 	sort(allDistances.begin(), allDistances.end());
 	
-	vector<set<position> groupedPositions;
-	int count = 0;
-	int i = 0;
-	while (count < 10 && i < allDistances.size()){
-		cout << "f" << endl;
-		for (pair<Position, Position> posPair: distances[allDistances[i]]){
-			count += 1;
-			cout << posPair.second.toString() << endl;
-			if (!isPositionAlreadyInRoute(links, posPair.second, posPair.first)){
-				links[posPair.first] = posPair.second;
-			}
-			if (count > 10){
-				break;
-			}
-		}
-		i++;
-	}
-	
-	unordered_map<Position, int, PositionHashing> finalPositionCount;
-	
-    for (auto kvpair : links){
-		Position currentPosition = kvpair.first;
-		Position endOfRoute = getEndOfRoute(links, currentPosition);
-		finalPositionCount.insert({endOfRoute, 0});
-		finalPositionCount[endOfRoute] += 1;
-	}
-	
-    for (auto kvpair : finalPositionCount){
-		cout << kvpair.second << endl;
-	}
+	GroupedPositions groupedPositions;
 
+	for (int i = 0; i < 10; i++){
+		for (pair<Position, Position> posPair: distances[allDistances[i]]){
+			groupedPositions.addPositions(posPair.first, posPair.second);
+		}
+	}
+	
+	vector<int> allSizes;
+    for (unordered_set<Position, PositionHashing> group : groupedPositions.positionGroups){
+		allSizes.push_back(group.size());
+	}
+	
+	sort(allSizes.begin(), allSizes.end(), greater<>());
+	
+	int result = 1;
+	for (int i = 0; i < 3; i++){
+		result = result * allSizes[i];
+		cout << allSizes[i];
+	}
+	
+	cout << result;
 	
 	
 	
