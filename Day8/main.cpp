@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -65,13 +66,13 @@ vector<Position> getPositionsFromFile(string fileName){
 	return allPositions;
 }
 
-Position getClosestPosition(Position position, vector<Position positions>){
+Position getClosestPosition(Position& position, vector<Position>& positions){
 	Position closestPosition = positions[0];
-	int smallestDistance = position.getDistance(position[0]);
+	float smallestDistance = position.getDistance(positions[0]);
 	
-	for (Position currentPosition : positions):
-		int currentDistance = currentPosition.getDistance(position)
-		if (currentPosition != position && currentDistance < smallestDistance){
+	for (Position currentPosition : positions){
+		int currentDistance = currentPosition.getDistance(position);
+		if (&currentPosition != &position && currentDistance < smallestDistance){
 			smallestDistance = currentDistance;
 		}
 	}
@@ -80,9 +81,9 @@ Position getClosestPosition(Position position, vector<Position positions>){
 }
 
 int main(){
-	
 	vector<Position> allPositions = getPositionsFromFile("input.txt");
-	cout << Position(0, 0 ,0).getDistance(Position(2,2,2));
+	
+	map<Position, Position> closestPositions;
 
 	return 0;
 }
