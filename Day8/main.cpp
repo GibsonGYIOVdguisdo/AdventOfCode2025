@@ -251,28 +251,6 @@ int main(){
 	}
 	
 	cout << result;
-	
-	
-	
-	
-	
-	// for (Position position : allPositions){
-	// 	Position lastPosition;
-	// 	bool revisited = false;
-	// 	Position currentPosition = position;
-	// 	
-	// 	while (revisited == false){
-	// 		currentPosition = closestPositions[currentPosition];
-	// 		if (closestPositions[currentPosition] == lastPosition){
-	// 			revisited = true;
-	// 			currentPosition = lastPosition;
-	// 		}
-	// 		lastPosition = currentPosition;
-	// 	}
-	// 	circuitSizes.insert({currentPosition, 1});
-	// 	circuitSizes[currentPosition] += 1;
-	// }
-	
 
 	return 0;
 }
