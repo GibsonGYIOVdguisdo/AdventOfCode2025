@@ -156,7 +156,7 @@ class GroupedPositions{
 	public:
 		vector<unordered_set<Position, PositionHashing>> positionGroups = {};
 		
-		void addPositions(Position position1, Position position2){
+		bool addPositions(Position position1, Position position2){
 			bool added = false;
 			int pos1Set = -1;
 			int pos2Set = -1;
@@ -173,7 +173,7 @@ class GroupedPositions{
 			i--;
 			
 			if (pos1Set == pos2Set && pos1Set != -1 && pos2Set != -1){
-				return;
+				return false;
 			}
 			if (pos1Set != -1 && pos2Set != -1){
 				positionGroups[pos1Set].insert(position1);
@@ -181,19 +181,23 @@ class GroupedPositions{
 				
 				positionGroups[pos1Set].insert(positionGroups[pos2Set].begin(), positionGroups[pos2Set].end());
 				positionGroups.erase(positionGroups.begin() + pos2Set);
+				return true;
 				
 			}
 			else if (pos1Set != -1){
 				positionGroups[pos1Set].insert(position2);
+				return true;
 			}
 			else if (pos2Set != -1){
 				positionGroups[pos2Set].insert(position1);
+				return true;
 			}
 			else {
 				unordered_set<Position, PositionHashing> newSet;
 				newSet.insert(position1);
 				newSet.insert(position2);
 				positionGroups.push_back(newSet);
+				return true;
 			}
 		}
 };
@@ -220,11 +224,18 @@ int main(){
 	sort(allDistances.begin(), allDistances.end());
 	
 	GroupedPositions groupedPositions;
-
-	for (int i = 0; i < 10; i++){
+	int count = 0;
+	int i = 0;
+	cout << "size: " << distances.size() << endl;
+	while (count < 1000 && i < distances.size()){
 		for (pair<Position, Position> posPair: distances[allDistances[i]]){
 			groupedPositions.addPositions(posPair.first, posPair.second);
+			count++;
+			if (count >= 1000){
+				break;
+			}
 		}
+		i++;
 	}
 	vector<int> allSizes;
   for (unordered_set<Position, PositionHashing> group : groupedPositions.positionGroups){
