@@ -172,7 +172,9 @@ class GroupedPositions{
 			}
 			i--;
 			
-			
+			if (pos1Set == pos2Set && pos1Set != -1 && pos2Set != -1){
+				return;
+			}
 			if (pos1Set != -1 && pos2Set != -1){
 				positionGroups[pos1Set].insert(position1);
 				positionGroups[pos1Set].insert(position2);
@@ -224,9 +226,8 @@ int main(){
 			groupedPositions.addPositions(posPair.first, posPair.second);
 		}
 	}
-	
 	vector<int> allSizes;
-    for (unordered_set<Position, PositionHashing> group : groupedPositions.positionGroups){
+  for (unordered_set<Position, PositionHashing> group : groupedPositions.positionGroups){
 		allSizes.push_back(group.size());
 	}
 	
@@ -234,8 +235,8 @@ int main(){
 	
 	int result = 1;
 	for (int i = 0; i < 3; i++){
+		cout << allSizes[i] << endl;
 		result = result * allSizes[i];
-		cout << allSizes[i];
 	}
 	
 	cout << result;
